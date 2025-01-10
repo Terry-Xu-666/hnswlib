@@ -352,35 +352,22 @@ class Index {
             throw std::runtime_error("Index is not initialized");
         }
         
+        std::vector<std::vector<hnswlib::labeltype>> labeled_adj_list;
         std::vector<std::vector<hnswlib::tableint>> adj_list = appr_alg->getLayerGraph(level);
         
-        std::vector<std::vector<hnswlib::labeltype>> labeled_adj_list(adj_list.size());
-        for (size_t i = 0; i < adj_list.size(); i++) {
-            labeled_adj_list[i].reserve(adj_list[i].size());
-            for (hnswlib::tableint internal_id : adj_list[i]) {
-                labeled_adj_list[i].push_back(appr_alg->getExternalLabel(internal_id));
-            }
-        }
-        
-        size_t max_neighbors = 0;
-        for (const auto& neighbors : labeled_adj_list) {
-            max_neighbors = std::max(max_neighbors, neighbors.size());
-        }
-        
-        py::array_t<hnswlib::labeltype> result({labeled_adj_list.size(), max_neighbors});
-        auto buf = result.mutable_unchecked<2>();
-        
-        for (size_t i = 0; i < labeled_adj_list.size(); i++) {
-            for (size_t j = 0; j < max_neighbors; j++) {
-                if (j < labeled_adj_list[i].size()) {
-                    buf(i, j) = labeled_adj_list[i][j];
-                } else {
-                    buf(i, j) = -1;  // Padding value for non-existent connections
+        labeled_adj_list.reserve(adj_list.size());
+        for (const auto& neighbors : adj_list) {
+            if (!neighbors.empty()) {
+                std::vector<hnswlib::labeltype> labeled_neighbors;
+                labeled_neighbors.reserve(neighbors.size());
+                for (hnswlib::tableint internal_id : neighbors) {
+                    labeled_neighbors.push_back(appr_alg->getExternalLabel(internal_id));
                 }
+                labeled_adj_list.push_back(labeled_neighbors);
             }
         }
         
-        return result;
+        return py::cast(labeled_adj_list);
     }
 
 

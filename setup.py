@@ -134,9 +134,17 @@ setup(
     description='hnswlib adapted for TGRAG project',
     author='Yury Malkov and others(original author),Tianyang Xu and others(TGRAG team)',
     url='https://github.com/yurymalkov/hnsw',
-    long_description="""This is a modified version of hnswlib, which adds a new function to get the layer graph of the index.""",
     ext_modules=ext_modules,
     install_requires=['numpy'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
+    python_requires='>=3.10,<3.12',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+    ],
 )
