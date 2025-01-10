@@ -1,6 +1,10 @@
 name: Build Wheels
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - graph_layer    # only trigger on graph_layer branch
+  workflow_dispatch:   # keep manual trigger option
 
 jobs:
   build_wheels:
