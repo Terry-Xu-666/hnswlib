@@ -1408,5 +1408,25 @@ class HierarchicalNSW : public AlgorithmInterface<dist_t> {
         }
         std::cout << "integrity ok, checked " << connections_checked << " connections\n";
     }
+
+    std::vector<std::vector<tableint>> getLayerGraph(int level) const {
+        std::vector<std::vector<tableint>> adj_list(cur_element_count);
+        
+        for (tableint i = 0; i < cur_element_count; i++) {
+            if (element_levels_[i] < level) continue;
+            
+            linklistsizeint* links = get_linklist_at_level(i, level);
+            size_t size = getListCount(links);
+            tableint* data = (tableint*)(links + 1);
+            
+            for (size_t j = 0; j < size; j++) {
+                if (data[j] < cur_element_count) {
+                    adj_list[i].push_back(data[j]);
+                }
+            }
+        }
+        
+        return adj_list;
+    }
 };
 }  // namespace hnswlib

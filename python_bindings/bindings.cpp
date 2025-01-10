@@ -347,6 +347,42 @@ class Index {
         return ids;
     }
 
+    py::object getLayerGraph(int level) const {
+        if (!index_inited) {
+            throw std::runtime_error("Index is not initialized");
+        }
+        
+        std::vector<std::vector<hnswlib::tableint>> adj_list = appr_alg->getLayerGraph(level);
+        
+        std::vector<std::vector<hnswlib::labeltype>> labeled_adj_list(adj_list.size());
+        for (size_t i = 0; i < adj_list.size(); i++) {
+            labeled_adj_list[i].reserve(adj_list[i].size());
+            for (hnswlib::tableint internal_id : adj_list[i]) {
+                labeled_adj_list[i].push_back(appr_alg->getExternalLabel(internal_id));
+            }
+        }
+        
+        size_t max_neighbors = 0;
+        for (const auto& neighbors : labeled_adj_list) {
+            max_neighbors = std::max(max_neighbors, neighbors.size());
+        }
+        
+        py::array_t<hnswlib::labeltype> result({labeled_adj_list.size(), max_neighbors});
+        auto buf = result.mutable_unchecked<2>();
+        
+        for (size_t i = 0; i < labeled_adj_list.size(); i++) {
+            for (size_t j = 0; j < max_neighbors; j++) {
+                if (j < labeled_adj_list[i].size()) {
+                    buf(i, j) = labeled_adj_list[i][j];
+                } else {
+                    buf(i, j) = -1;  // Padding value for non-existent connections
+                }
+            }
+        }
+        
+        return result;
+    }
+
 
     py::dict getAnnData() const { /* WARNING: Index::getAnnData is not thread-safe with Index::addItems */
         std::unique_lock <std::mutex> templock(appr_alg->global);
@@ -934,6 +970,10 @@ PYBIND11_PLUGIN(hnswlib) {
             py::arg("ids") = py::none(),
             py::arg("num_threads") = -1,
             py::arg("replace_deleted") = false)
+        .def("get_layer_graph", 
+            &Index<float>::getLayerGraph,
+            py::arg("level"),
+            "Get the adjacency matrix for a specific layer. Returns a numpy array where -1 indicates no connection.")
         .def("get_items", &Index<float>::getData, py::arg("ids") = py::none(), py::arg("return_type") = "numpy")
         .def("get_ids_list", &Index<float>::getIdsList)
         .def("set_ef", &Index<float>::set_ef, py::arg("ef"))

@@ -8,7 +8,7 @@ import setuptools
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.8.0'
+__version__ = '0.8.1'
 
 
 include_dirs = [
@@ -129,12 +129,12 @@ class BuildExt(build_ext):
 
 
 setup(
-    name='hnswlib',
+    name='hnswlib-tgrag',
     version=__version__,
-    description='hnswlib',
-    author='Yury Malkov and others',
+    description='hnswlib adapted for TGRAG project',
+    author='Yury Malkov and others(original author),Tianyang Xu and others(TGRAG team)',
     url='https://github.com/yurymalkov/hnsw',
-    long_description="""hnsw""",
+    long_description="""This is a modified version of hnswlib, which adds a new function to get the layer graph of the index.""",
     ext_modules=ext_modules,
     install_requires=['numpy'],
     cmdclass={'build_ext': BuildExt},
