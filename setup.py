@@ -132,7 +132,7 @@ setup(
     name='hnswlib-tgrag',
     version=__version__,
     description='hnswlib adapted for TGRAG project',
-    author='Yury Malkov and others(original author),Tianyang Xu and others(TGRAG team)',
+    author='Yury Malkov and others(original author),Tianyang Xu and others(TGRAG R&D team)',
     url='https://github.com/yurymalkov/hnsw',
     ext_modules=ext_modules,
     install_requires=['numpy'],
