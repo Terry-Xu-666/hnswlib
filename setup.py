@@ -32,7 +32,7 @@ extra_objects = []
 
 ext_modules = [
     Extension(
-        'hnswlib',
+        'hnswlib_tgrag',
         source_files,
         include_dirs=include_dirs,
         libraries=libraries,
@@ -129,7 +129,7 @@ class BuildExt(build_ext):
 
 
 setup(
-    name='hnswlib-tgrag',
+    name='hnswlib_tgrag',
     version=__version__,
     description='hnswlib adapted for TGRAG project',
     author='Yury Malkov and others(original author),Tianyang Xu and others(TGRAG R&D team)',

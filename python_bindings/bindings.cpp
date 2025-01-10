@@ -930,111 +930,111 @@ class BFIndex {
 };
 
 
-PYBIND11_PLUGIN(hnswlib) {
-        py::module m("hnswlib");
+PYBIND11_PLUGIN(hnswlib_tgrag) {
+    py::module m("hnswlib_tgrag");
 
-        py::class_<Index<float>>(m, "Index")
-        .def(py::init(&Index<float>::createFromParams), py::arg("params"))
-           /* WARNING: Index::createFromIndex is not thread-safe with Index::addItems */
-        .def(py::init(&Index<float>::createFromIndex), py::arg("index"))
-        .def(py::init<const std::string &, const int>(), py::arg("space"), py::arg("dim"))
-        .def("init_index",
-            &Index<float>::init_new_index,
-            py::arg("max_elements"),
-            py::arg("M") = 16,
-            py::arg("ef_construction") = 200,
-            py::arg("random_seed") = 100,
-            py::arg("allow_replace_deleted") = false)
-        .def("knn_query",
-            &Index<float>::knnQuery_return_numpy,
-            py::arg("data"),
-            py::arg("k") = 1,
-            py::arg("num_threads") = -1,
-            py::arg("filter") = py::none())
-        .def("add_items",
-            &Index<float>::addItems,
-            py::arg("data"),
-            py::arg("ids") = py::none(),
-            py::arg("num_threads") = -1,
-            py::arg("replace_deleted") = false)
-        .def("get_layer_graph", 
-            &Index<float>::getLayerGraph,
-            py::arg("level"),
-            "Get the adjacency matrix for a specific layer. Returns a numpy array where -1 indicates no connection.")
-        .def("get_items", &Index<float>::getData, py::arg("ids") = py::none(), py::arg("return_type") = "numpy")
-        .def("get_ids_list", &Index<float>::getIdsList)
-        .def("set_ef", &Index<float>::set_ef, py::arg("ef"))
-        .def("set_num_threads", &Index<float>::set_num_threads, py::arg("num_threads"))
-        .def("index_file_size", &Index<float>::indexFileSize)
-        .def("save_index", &Index<float>::saveIndex, py::arg("path_to_index"))
-        .def("load_index",
-            &Index<float>::loadIndex,
-            py::arg("path_to_index"),
-            py::arg("max_elements") = 0,
-            py::arg("allow_replace_deleted") = false)
-        .def("mark_deleted", &Index<float>::markDeleted, py::arg("label"))
-        .def("unmark_deleted", &Index<float>::unmarkDeleted, py::arg("label"))
-        .def("resize_index", &Index<float>::resizeIndex, py::arg("new_size"))
-        .def("get_max_elements", &Index<float>::getMaxElements)
-        .def("get_current_count", &Index<float>::getCurrentCount)
-        .def_readonly("space", &Index<float>::space_name)
-        .def_readonly("dim", &Index<float>::dim)
-        .def_readwrite("num_threads", &Index<float>::num_threads_default)
-        .def_property("ef",
-          [](const Index<float> & index) {
-            return index.index_inited ? index.appr_alg->ef_ : index.default_ef;
-          },
-          [](Index<float> & index, const size_t ef_) {
-            index.default_ef = ef_;
-            if (index.appr_alg)
-              index.appr_alg->ef_ = ef_;
-        })
-        .def_property_readonly("max_elements", [](const Index<float> & index) {
-            return index.index_inited ? index.appr_alg->max_elements_ : 0;
-        })
-        .def_property_readonly("element_count", [](const Index<float> & index) {
-            return index.index_inited ? (size_t)index.appr_alg->cur_element_count : 0;
-        })
-        .def_property_readonly("ef_construction", [](const Index<float> & index) {
-          return index.index_inited ? index.appr_alg->ef_construction_ : 0;
-        })
-        .def_property_readonly("M",  [](const Index<float> & index) {
-          return index.index_inited ? index.appr_alg->M_ : 0;
-        })
+    py::class_<Index<float>>(m, "Index")
+    .def(py::init(&Index<float>::createFromParams), py::arg("params"))
+       /* WARNING: Index::createFromIndex is not thread-safe with Index::addItems */
+    .def(py::init(&Index<float>::createFromIndex), py::arg("index"))
+    .def(py::init<const std::string &, const int>(), py::arg("space"), py::arg("dim"))
+    .def("init_index",
+        &Index<float>::init_new_index,
+        py::arg("max_elements"),
+        py::arg("M") = 16,
+        py::arg("ef_construction") = 200,
+        py::arg("random_seed") = 100,
+        py::arg("allow_replace_deleted") = false)
+    .def("knn_query",
+        &Index<float>::knnQuery_return_numpy,
+        py::arg("data"),
+        py::arg("k") = 1,
+        py::arg("num_threads") = -1,
+        py::arg("filter") = py::none())
+    .def("add_items",
+        &Index<float>::addItems,
+        py::arg("data"),
+        py::arg("ids") = py::none(),
+        py::arg("num_threads") = -1,
+        py::arg("replace_deleted") = false)
+    .def("get_layer_graph", 
+        &Index<float>::getLayerGraph,
+        py::arg("level"),
+        "Get the adjacency matrix for a specific layer. Returns a numpy array where -1 indicates no connection.")
+    .def("get_items", &Index<float>::getData, py::arg("ids") = py::none(), py::arg("return_type") = "numpy")
+    .def("get_ids_list", &Index<float>::getIdsList)
+    .def("set_ef", &Index<float>::set_ef, py::arg("ef"))
+    .def("set_num_threads", &Index<float>::set_num_threads, py::arg("num_threads"))
+    .def("index_file_size", &Index<float>::indexFileSize)
+    .def("save_index", &Index<float>::saveIndex, py::arg("path_to_index"))
+    .def("load_index",
+        &Index<float>::loadIndex,
+        py::arg("path_to_index"),
+        py::arg("max_elements") = 0,
+        py::arg("allow_replace_deleted") = false)
+    .def("mark_deleted", &Index<float>::markDeleted, py::arg("label"))
+    .def("unmark_deleted", &Index<float>::unmarkDeleted, py::arg("label"))
+    .def("resize_index", &Index<float>::resizeIndex, py::arg("new_size"))
+    .def("get_max_elements", &Index<float>::getMaxElements)
+    .def("get_current_count", &Index<float>::getCurrentCount)
+    .def_readonly("space", &Index<float>::space_name)
+    .def_readonly("dim", &Index<float>::dim)
+    .def_readwrite("num_threads", &Index<float>::num_threads_default)
+    .def_property("ef",
+      [](const Index<float> & index) {
+        return index.index_inited ? index.appr_alg->ef_ : index.default_ef;
+      },
+      [](Index<float> & index, const size_t ef_) {
+        index.default_ef = ef_;
+        if (index.appr_alg)
+          index.appr_alg->ef_ = ef_;
+    })
+    .def_property_readonly("max_elements", [](const Index<float> & index) {
+        return index.index_inited ? index.appr_alg->max_elements_ : 0;
+    })
+    .def_property_readonly("element_count", [](const Index<float> & index) {
+        return index.index_inited ? (size_t)index.appr_alg->cur_element_count : 0;
+    })
+    .def_property_readonly("ef_construction", [](const Index<float> & index) {
+      return index.index_inited ? index.appr_alg->ef_construction_ : 0;
+    })
+    .def_property_readonly("M",  [](const Index<float> & index) {
+      return index.index_inited ? index.appr_alg->M_ : 0;
+    })
 
-        .def(py::pickle(
-            [](const Index<float> &ind) {  // __getstate__
-                return py::make_tuple(ind.getIndexParams()); /* Return dict (wrapped in a tuple) that fully encodes state of the Index object */
-            },
-            [](py::tuple t) {  // __setstate__
-                if (t.size() != 1)
-                    throw std::runtime_error("Invalid state!");
-                return Index<float>::createFromParams(t[0].cast<py::dict>());
-            }))
+    .def(py::pickle(
+        [](const Index<float> &ind) {  // __getstate__
+            return py::make_tuple(ind.getIndexParams()); /* Return dict (wrapped in a tuple) that fully encodes state of the Index object */
+        },
+        [](py::tuple t) {  // __setstate__
+            if (t.size() != 1)
+                throw std::runtime_error("Invalid state!");
+            return Index<float>::createFromParams(t[0].cast<py::dict>());
+        }))
 
-        .def("__repr__", [](const Index<float> &a) {
-            return "<hnswlib.Index(space='" + a.space_name + "', dim="+std::to_string(a.dim)+")>";
-        });
+    .def("__repr__", [](const Index<float> &a) {
+        return "<hnswlib.Index(space='" + a.space_name + "', dim="+std::to_string(a.dim)+")>";
+    });
 
-        py::class_<BFIndex<float>>(m, "BFIndex")
-        .def(py::init<const std::string &, const int>(), py::arg("space"), py::arg("dim"))
-        .def("init_index", &BFIndex<float>::init_new_index, py::arg("max_elements"))
-        .def("knn_query",
-            &BFIndex<float>::knnQuery_return_numpy,
-            py::arg("data"),
-            py::arg("k") = 1,
-            py::arg("num_threads") = -1,
-            py::arg("filter") = py::none())
-        .def("add_items", &BFIndex<float>::addItems, py::arg("data"), py::arg("ids") = py::none())
-        .def("delete_vector", &BFIndex<float>::deleteVector, py::arg("label"))
-        .def("set_num_threads", &BFIndex<float>::set_num_threads, py::arg("num_threads"))
-        .def("save_index", &BFIndex<float>::saveIndex, py::arg("path_to_index"))
-        .def("load_index", &BFIndex<float>::loadIndex, py::arg("path_to_index"), py::arg("max_elements") = 0)
-        .def("__repr__", [](const BFIndex<float> &a) {
-            return "<hnswlib.BFIndex(space='" + a.space_name + "', dim="+std::to_string(a.dim)+")>";
-        })
-        .def("get_max_elements", &BFIndex<float>::getMaxElements)
-        .def("get_current_count", &BFIndex<float>::getCurrentCount)
-        .def_readwrite("num_threads", &BFIndex<float>::num_threads_default);
-        return m.ptr();
+    py::class_<BFIndex<float>>(m, "BFIndex")
+    .def(py::init<const std::string &, const int>(), py::arg("space"), py::arg("dim"))
+    .def("init_index", &BFIndex<float>::init_new_index, py::arg("max_elements"))
+    .def("knn_query",
+        &BFIndex<float>::knnQuery_return_numpy,
+        py::arg("data"),
+        py::arg("k") = 1,
+        py::arg("num_threads") = -1,
+        py::arg("filter") = py::none())
+    .def("add_items", &BFIndex<float>::addItems, py::arg("data"), py::arg("ids") = py::none())
+    .def("delete_vector", &BFIndex<float>::deleteVector, py::arg("label"))
+    .def("set_num_threads", &BFIndex<float>::set_num_threads, py::arg("num_threads"))
+    .def("save_index", &BFIndex<float>::saveIndex, py::arg("path_to_index"))
+    .def("load_index", &BFIndex<float>::loadIndex, py::arg("path_to_index"), py::arg("max_elements") = 0)
+    .def("__repr__", [](const BFIndex<float> &a) {
+        return "<hnswlib.BFIndex(space='" + a.space_name + "', dim="+std::to_string(a.dim)+")>";
+    })
+    .def("get_max_elements", &BFIndex<float>::getMaxElements)
+    .def("get_current_count", &BFIndex<float>::getCurrentCount)
+    .def_readwrite("num_threads", &BFIndex<float>::num_threads_default);
+    return m.ptr();
 }

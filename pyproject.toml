@@ -9,6 +9,6 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-skip = ["cp36-*", "cp37-*", "cp38-*", "cp39-*", "pp*"]  # 只支持 Python 3.10 和 3.11
+skip = ["cp36-*", "cp37-*", "cp38-*", "cp39-*", "cp312","cp313","pp*"]  # 只支持 Python 3.10 和 3.11
 test-requires = ["pytest"]
 test-command = "pytest {project}/tests"
