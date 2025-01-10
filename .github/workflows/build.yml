@@ -3,8 +3,8 @@ name: Build Wheels
 on:
   push:
     branches:
-      - graph_layer    # only trigger on graph_layer branch
-  workflow_dispatch:   # keep manual trigger option
+      - graph_layer
+  workflow_dispatch:
 
 jobs:
   build_wheels:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ["cp310", "cp311"]
+        python: ["cp310", "cp311", "cp312"]
 
     steps:
       - uses: actions/checkout@v3
@@ -29,13 +29,10 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: ${{ matrix.python }}-*
-          # macOS 配置
           CIBW_ARCHS_MACOS: "x86_64 arm64"
           CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.7"
-          # Linux 配置
           CIBW_ARCHS_LINUX: "x86_64"
           CIBW_SKIP: "*-musllinux*"
-          # Windows 配置
           CIBW_ARCHS_WINDOWS: "AMD64"
         run: python -m cibuildwheel --output-dir wheelhouse
 

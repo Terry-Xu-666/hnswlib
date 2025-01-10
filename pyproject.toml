@@ -9,6 +9,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
+requires-python = ">=3.10, <4.0"
 skip = ["cp36-*", "cp37-*", "cp38-*", "cp39-*", "pp*"]  # 只支持 Python 3.10 和 3.11
 test-requires = ["pytest"]
 test-command = "pytest {project}/tests"
