@@ -138,7 +138,7 @@ setup(
     install_requires=['numpy'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
-    python_requires='>=3.10,<3.12',
+    python_requires='>=3.10,<4.0',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Science/Research',
