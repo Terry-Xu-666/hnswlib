@@ -1,4 +1,3 @@
-hnswlib.egg-info/
 build/
 dist/
 tmp/
@@ -12,3 +11,4 @@ var/
 **.DS_Store
 *.pyc
 wheelhouse/
+hnswlib_tgrag.egg-info/

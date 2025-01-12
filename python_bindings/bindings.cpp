@@ -352,22 +352,21 @@ class Index {
             throw std::runtime_error("Index is not initialized");
         }
         
-        std::vector<std::vector<hnswlib::labeltype>> labeled_adj_list;
+        std::map<hnswlib::labeltype, std::vector<hnswlib::labeltype>> labeled_adj_map;
         std::vector<std::vector<hnswlib::tableint>> adj_list = appr_alg->getLayerGraph(level);
         
-        labeled_adj_list.reserve(adj_list.size());
-        for (const auto& neighbors : adj_list) {
-            if (!neighbors.empty()) {
+        for (size_t i = 0; i < adj_list.size(); i++) {
+            if (!adj_list[i].empty()) {
+                hnswlib::labeltype node_label = appr_alg->getExternalLabel(i);
                 std::vector<hnswlib::labeltype> labeled_neighbors;
-                labeled_neighbors.reserve(neighbors.size());
-                for (hnswlib::tableint internal_id : neighbors) {
+                for (hnswlib::tableint internal_id : adj_list[i]) {
                     labeled_neighbors.push_back(appr_alg->getExternalLabel(internal_id));
                 }
-                labeled_adj_list.push_back(labeled_neighbors);
+                labeled_adj_map[node_label] = labeled_neighbors;
             }
         }
         
-        return py::cast(labeled_adj_list);
+        return py::cast(labeled_adj_map);
     }
 
 
