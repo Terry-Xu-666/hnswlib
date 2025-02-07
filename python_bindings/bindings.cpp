@@ -929,8 +929,8 @@ class BFIndex {
 };
 
 
-PYBIND11_PLUGIN(hnswlib_tgrag) {
-    py::module m("hnswlib_tgrag");
+PYBIND11_PLUGIN(hnswlib_noderag) {
+    py::module m("hnswlib_noderag");
 
     py::class_<Index<float>>(m, "Index")
     .def(py::init(&Index<float>::createFromParams), py::arg("params"))

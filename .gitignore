@@ -11,4 +11,4 @@ var/
 **.DS_Store
 *.pyc
 wheelhouse/
-hnswlib_tgrag.egg-info/
+hnswlib_noderag.egg-info/

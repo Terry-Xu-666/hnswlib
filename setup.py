@@ -32,13 +32,14 @@ extra_objects = []
 
 ext_modules = [
     Extension(
-        'hnswlib_tgrag',
+        'hnswlib_noderag',
         source_files,
         include_dirs=include_dirs,
         libraries=libraries,
         language='c++',
         extra_objects=extra_objects,
     ),
+
 ]
 
 
@@ -129,12 +130,13 @@ class BuildExt(build_ext):
 
 
 setup(
-    name='hnswlib_tgrag',
+    name='hnswlib_noderag',
     version=__version__,
-    description='hnswlib adapted for TGRAG project',
-    author='Yury Malkov and others(original author),Tianyang Xu and others(TGRAG R&D team)',
+    description='hnswlib adapted for Node RAG project',
+    author='Yury Malkov and others(original author),Tianyang Xu and others(NodeRAG team)',
     url='https://github.com/yurymalkov/hnsw',
     ext_modules=ext_modules,
+
     install_requires=['numpy'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
